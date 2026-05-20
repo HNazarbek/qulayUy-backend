@@ -1,3 +1,4 @@
+const { default: mongoose } = require('mongoose');
 const Listing      = require('../models/Listing');
 const Notification = require('../models/Notification');
 
@@ -46,6 +47,10 @@ exports.getListings = async (req, res, next) => {
     const sortObj = sortMap[sort] || { createdAt: -1 };
 
     const skip  = (parseInt(page) - 1) * parseInt(limit);
+
+
+        console.log('DB name:', mongoose.connection.db.databaseName);
+    console.log('Collection:', Listing.collection.collectionName);
     const total = await Listing.countDocuments(filter);
     const listings = await Listing.find(filter)
       .sort(sortObj)
@@ -72,7 +77,7 @@ exports.getListing = async (req, res, next) => {
       _id: req.params.id,
       isPublished: true,
       isDeleted: false,
-    }).populate('owner', 'name email');
+    }).populate({ path: 'owner', select: 'name email', strictPopulate: false })
 
     if (!listing) {
       return res.status(404).json({ success: false, message: "E'lon topilmadi" });
