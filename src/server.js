@@ -1,14 +1,14 @@
 require('dotenv').config();
-const express  = require('express');
-const path     = require('path');
+const express = require('express');
+const path = require('path');
 
-const connectDB     = require('./config/db');
-const errorHandler  = require('./middleware/errorHandler');
+const connectDB = require('./config/db');
+const errorHandler = require('./middleware/errorHandler');
 
-const authRoutes    = require('./routes/auth');
+const authRoutes = require('./routes/auth');
 const listingRoutes = require('./routes/listings');
-const marketRoutes  = require('./routes/market');
-const notifRoutes   = require('./routes/notifications');
+const marketRoutes = require('./routes/market');
+const notifRoutes = require('./routes/notifications');
 
 // ─── App ─────────────────────────────────────────────────────
 const app = express();
@@ -24,6 +24,7 @@ app.use(cors({
     'http://localhost:3000',
     'http://localhost:5173',
     'http://localhost:5174',
+    'https://qulayuy.vercel.app'
   ],
   credentials: true,
 }));
@@ -36,10 +37,10 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
 
 // ─── Routes ──────────────────────────────────────────────────
-app.use('/api/auth',           authRoutes);
-app.use('/api/listings',       listingRoutes);
-app.use('/api/market',         marketRoutes);
-app.use('/api/notifications',  notifRoutes);
+app.use('/api/auth', authRoutes);
+app.use('/api/listings', listingRoutes);
+app.use('/api/market', marketRoutes);
+app.use('/api/notifications', notifRoutes);
 
 // ─── Health check ────────────────────────────────────────────
 app.get('/api/health', (req, res) => {
